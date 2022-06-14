@@ -49,7 +49,6 @@ VideoClip.resize = resize
 # from moviepy.editor import TextClip
 # print(TextClip.list("font"))
 
-
 cl = Client()
 user = "bf_bruteforce"  # ID for Insta
 passw = "Brute.5.Force"  # Pass
@@ -116,11 +115,13 @@ else:
     try:
         f = open(mentions, "r")
 
+        print("Fetching Mention if any: ")
         while True:
             mention = f.readline()
             if not mention:
                 break
-            user_mentions.append(cl.user_info_by_username(mention.rstrip()))
+            print(mention.rstrip('\n'))
+            user_mentions.append(cl.user_info_by_username_v1(mention.rstrip('\n')))
 
     except Exception as e:
         print("Error Fetching IDs\n", str(e))
@@ -167,7 +168,11 @@ if __name__ == '__main__':
 
             if file.find("%") != -1 and (path.endswith('.mp4') or path.endswith('.png') or path.endswith('.jpg')):
                 print("\n \nStory = ", file)
-                caption = input("Enter a caption for the story: ")
+                fileName = os.path.splitext(ifile)[0]
+                fileName = fileName.replace('%', '')
+                caption = fileName
+                print("\nCAPTION: ", caption, '\n')
+                # caption = input("Enter a caption for the story: ")
 
             for user in user_mentions:
                 users.append(StoryMention(user=user, x=0.49892962))
@@ -188,7 +193,7 @@ if __name__ == '__main__':
                     os.system('pause')
                     sys.exit()
                 else:
-                    print("\n \n", file, " ", "Story uploaded successfully!")
+                    print("\n\n", file, " ", "Story uploaded successfully!")
 
             elif path.endswith('.png') or path.endswith('.jpg') or path.endswith('.jpeg'):
                 try:
@@ -201,7 +206,7 @@ if __name__ == '__main__':
                     os.system('pause')
                     sys.exit()
                 else:
-                    print("\n \n", file, " ", "Story uploaded successfully!")
+                    print("\n\n", file, " ", "Story uploaded successfully!")
 
             else:
                 print(f'Invalid file: {file} \nIgnoring File..\n')
@@ -219,7 +224,11 @@ if __name__ == '__main__':
 
             if file.find("%") != -1 and (path.endswith('.mp4') or path.endswith('.png') or path.endswith('.jpg')):
                 print("\n \nClip = ", file)
-                caption = input("Enter a caption for the clip: ")
+                fileName = os.path.splitext(ifile)[0]
+                fileName = fileName.replace('%', '')
+                caption = fileName
+                print("\nCAPTION: ", caption, '\n')
+                # caption = input("Enter a caption for the clip: ")
 
             caption = caption + megaCaption
 
@@ -233,7 +242,7 @@ if __name__ == '__main__':
                     os.system('pause')
 
                 else:
-                    print("\n \n", file, " ", "Post uploaded successfully!")
+                    print("\n\n", file, " ", "Post uploaded successfully!")
 
             elif path.endswith('.png') or path.endswith('.jpg') or path.endswith('.jpeg'):
                 try:
@@ -245,7 +254,7 @@ if __name__ == '__main__':
                     sys.exit()
 
                 else:
-                    print("\n \n", file, " ", "Post uploaded successfully!")
+                    print("\n\n", file, " ", "Post uploaded successfully!")
 
             else:
                 print(f'Invalid file: {file} \nIgnoring File..\n')
