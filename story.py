@@ -90,13 +90,9 @@ class StoryBuilder:
             clip_top -= 50
         media_clip = clip.set_position((clip_left, clip_top))
         clips.append(media_clip)
-        mention = self.mentions[0] if self.mentions else None
+        mention = self.mentions if self.mentions else None
         # Text clip
         caption = self.caption
-        if self.mentions:
-            mention = self.mentions[0]
-            if getattr(mention, 'user', None):
-                caption = f"@{mention.user.username}"
         if caption:
             text_clip = TextClip(
                 caption,
@@ -105,8 +101,8 @@ class StoryBuilder:
                 kerning=-1,
                 fontsize=55,
                 method="caption",
-                align='North',
-                size=(850, 950)
+                align='South',
+                size=(750, 950)
             )
             text_clip_left = (self.width - 600) / 2
             text_clip_top = clip_top + clip.size[1] + 50
@@ -158,11 +154,36 @@ class StoryBuilder:
         # Mentions
         mentions = []
         if mention:
-            mention.x = 0.49892962  # approximately center
-            mention.y = (text_clip_top + text_clip.size[1] / 2) / self.height
-            mention.width = text_clip.size[0] / self.width
-            mention.height = text_clip.size[1] / self.height
-            mentions = [mention]
+            cord = 0.49892962
+            text_clip = TextClip(
+                "",
+                color=color,
+                font=font,
+                kerning=-1,
+                fontsize=50,
+                method="caption",
+                align='North',
+                size=(850, 950)
+            )
+            text_clip_left = (self.width - 600) / 2
+            text_clip_top = clip_top + clip.size[1] + 50
+            offset = (text_clip_top + text_clip.size[1]) - self.height
+            if offset > 0:
+                text_clip_top -= offset + 90
+            text_clip = (
+                text_clip.resize(width=600)
+                    .set_position((text_clip_left, text_clip_top))
+                    .fadein(2)
+            )
+            clips.append(text_clip)
+
+            for m in mention:
+                m.x = cord  # approximately center
+                m.y = (text_clip_top + text_clip.size[1] / 2) / self.height
+                m.width = text_clip.size[0] / self.width
+                m.height = text_clip.size[1] / self.height
+                mentions.append(m)
+
         duration = max_duration
         if getattr(clip, 'duration', None):
             if duration > int(clip.duration) or not duration:
