@@ -50,8 +50,8 @@ VideoClip.resize = resize
 # print(TextClip.list("font"))
 
 cl = Client()
-user = "bf_bruteforce"  # ID for Insta
-passw = "Brute.5.Force"  # Pass
+user = ""  # ID for Insta
+passw = ""  # Pass
 wuser = os.getlogin()
 dirName = f"/Users/{wuser}/Videos/AutoInstaStory"  # The directory to check
 mentions = dirName + "/mentions.txt"  # mentions path
